@@ -9,7 +9,7 @@ interface CustomError {
   message?: string;
 }
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     // Lấy refreshToken từ cookies
     const cookieStore = await cookies();

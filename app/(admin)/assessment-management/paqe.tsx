@@ -12,20 +12,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Plus, BookOpen, Loader2, Edit, Trash2, Eye, Calendar, Users, Clock, MoreHorizontal, Settings, HelpCircle, FileQuestion } from "lucide-react";
+import { Plus, BookOpen, Loader2, Edit, Trash2, Calendar, Clock,  Settings, FileQuestion } from "lucide-react";
 import { toast } from "sonner";
 import { useCreateAssessment } from "@/features/admin/hooks/useCreateAssessment";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+
 import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
@@ -44,44 +37,6 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-// Mock data cho assessment tests
-const mockAssessments = [
-  {
-    id: "1",
-    title: "English Grammar Foundation Test",
-    description: "Bài kiểm tra ngữ pháp cơ bản dành cho người mới bắt đầu",
-    status: "active",
-    createdAt: "2024-01-15"
-  },
-  {
-    id: "2",
-    title: "IELTS Reading Practice Test",
-    description: "Luyện tập kỹ năng đọc hiểu cho kỳ thi IELTS",
-    status: "active",
-    createdAt: "2024-01-10"
-  },
-  {
-    id: "3",
-    title: "Business English Assessment",
-    description: "Đánh giá trình độ tiếng Anh thương mại",
-    status: "inactive",
-    createdAt: "2024-01-08"
-  },
-  {
-    id: "4",
-    title: "Vocabulary Level Test",
-    description: "Kiểm tra vốn từ vựng tiếng Anh theo cấp độ",
-    status: "active",
-    createdAt: "2024-01-05"
-  },
-  {
-    id: "5",
-    title: "Listening Comprehension Test",
-    description: "Bài kiểm tra kỹ năng nghe hiểu tiếng Anh",
-    status: "inactive",
-    createdAt: "2024-01-03"
-  }
-];
 
 const AssessmentManagementPage = () => {
   const { mutate: createAssessment, isPending } = useCreateAssessment();

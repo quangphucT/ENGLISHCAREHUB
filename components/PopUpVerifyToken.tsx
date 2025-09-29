@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
-import { X } from "lucide-react";
+
 
 // OTP Popup Component
 interface OTPPopupProps {

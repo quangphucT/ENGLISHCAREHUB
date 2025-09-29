@@ -12,7 +12,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRegisterMutation } from "@/hooks/useRegisterMutation";
-import { ArrowLeft, Loader2, X, GraduationCap, Users } from "lucide-react";
+import { ArrowLeft, Loader2, GraduationCap, Users } from "lucide-react";
 
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";

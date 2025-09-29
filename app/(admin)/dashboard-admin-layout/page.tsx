@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { useState } from "react";
-import { FaSearch, FaBell, FaBars, FaChartBar, FaClipboardList } from "react-icons/fa";
 
 import {
   Chart,
@@ -13,7 +12,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { LogOutIcon, Home, BarChart3, ClipboardCheck, GraduationCap } from "lucide-react";
+import { Home, ClipboardCheck, GraduationCap } from "lucide-react";
 import PageStatistics from "../statistics/page";
 import AssessmentManagementPage from "../assessment-management/paqe";
 Chart.register(
