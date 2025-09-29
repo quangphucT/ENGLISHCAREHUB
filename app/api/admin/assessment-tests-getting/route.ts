@@ -10,9 +10,9 @@ interface CustomError {
 
 export async function GET(request: NextRequest) {
    try {
-        let accessToken = request.cookies.get('accessToken')?.value;
+        const accessToken = request.cookies.get('accessToken')?.value;
     
-        let response = await fetch(`${process.env.BE_API_URL}/assessment/all`, {
+        const response = await fetch(`${process.env.BE_API_URL}/assessment/all`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
             },
         });
         
-        let data = await response.json();
+        const data = await response.json();
         
         // Nếu access token hết hạn, return để client tự handle refresh
         if (response.status === 401) {
