@@ -1,5 +1,7 @@
 
 import {
+  ChooseRoleRequest,
+  ChooseRoleResponse,
   GoogleLoginRequest,
   GoogleLoginResponse,
   LoginRequest,
@@ -124,4 +126,22 @@ export const loginWithGoogleService = async (
   } 
 };
 
+export const chooseRoleAfterLoginGoogle = async (credentials: ChooseRoleRequest): Promise<ChooseRoleResponse> => {
+  try {
+    const response = await fetch("/api/auth/choose-role", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(credentials),
+    }); 
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || "Choose role failed");
+    return data;
+  } catch (error: any) {
+    const message =
+      error?.response?.data?.message || error.message || "Choose role failed";
+    throw new Error(message);
+  }
+};
 

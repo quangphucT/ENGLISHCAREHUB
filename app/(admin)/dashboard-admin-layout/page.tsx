@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useState } from "react";
-import { FaBox, FaSearch, FaBell, FaBars, FaListAlt } from "react-icons/fa";
+import { FaSearch, FaBell, FaBars, FaChartBar, FaClipboardList } from "react-icons/fa";
 
 import {
   Chart,
@@ -13,13 +13,9 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { LogOutIcon, PackageIcon, User, User2Icon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { LogOutIcon, Home, BarChart3, ClipboardCheck, GraduationCap } from "lucide-react";
 import PageStatistics from "../statistics/page";
-import AccountManagement from "../accounts-management/page";
-import MentorManagement from "../mentors/page";
-import ServicePackageManagement from "../packages/page";
+import AssessmentManagementPage from "../assessment-management/paqe";
 Chart.register(
   CategoryScale,
   LinearScale,
@@ -35,157 +31,90 @@ type SidebarProps = {
   setActiveMenu: (menu: string) => void;
 };
 
-const Sidebar: React.FC<SidebarProps> = ({ activeMenu, setActiveMenu }) => (
-  <aside className="hidden md:flex flex-col w-68 h-screen bg-white border-r px-6 py-8 fixed left-0 top-0 z-10">
-    <div className="flex items-center gap-2 font-bold text-xl mb-8">
-      <span className="text-violet-400 text-[35px]">Speak</span>
-      <span className="text-gray-800 text-3xl">AI</span>
-    </div>
-    <nav className="flex-1">
-      <ul className="space-y-2 ">
-        <li>
-          <button
-            type="button"
-            onClick={() => setActiveMenu("dashboard")}
-            className={`flex items-center gap-4 cursor-pointer px-3 py-2 rounded font-semibold w-full ${
-              activeMenu === "dashboard" ? "bg-blue-100" : "hover:bg-gray-100"
-            }`}
-          >
-              <span className="bg-blue-400 text-white p-2 rounded-full flex items-center justify-center"><FaBars size={22} /></span>
-              <div className="flex flex-col items-start justify-center">
-                <span className="font-bold">Dashboard</span>
-              </div>
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            onClick={() => setActiveMenu("account")}
-            className={`flex items-center gap-4 cursor-pointer px-3 py-2 rounded w-full ${
-              activeMenu === "account" ? "bg-violet-100" : "hover:bg-gray-100"
-            }`}
-          >
-              <span className="bg-violet-400 text-white p-2 rounded-full flex items-center justify-center"><User2Icon size={22} /></span>
-              <div className="flex flex-col items-start justify-center">
-                <span>Account</span>
-                <span>Management</span>
-              </div>
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            onClick={() => setActiveMenu("mentor")}
-            className={`flex items-center gap-4 cursor-pointer px-3 py-2 rounded w-full ${
-              activeMenu === "mentor" ? "bg-green-100" : "hover:bg-gray-100"
-            }`}
-          >
-              <span className="bg-green-400 text-white p-2 rounded-full flex items-center justify-center"><User size={22} /></span>
-              <div className="flex flex-col items-start justify-center">
-                <span>Mentor</span>
-                <span>Management</span>
-              </div>
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            onClick={() => setActiveMenu("package")}
-            className={`flex items-center gap-4 cursor-pointer px-3 py-2 rounded w-full ${
-              activeMenu === "package" ? "bg-yellow-100" : "hover:bg-gray-100"
-            }`}
-          >
-              <span className="bg-yellow-400 text-white p-2 rounded-full flex items-center justify-center"><PackageIcon size={22} /></span>
-              <div className="flex flex-col items-start justify-center">
-                <span>Service</span>
-                <span>Packages</span>
-              </div>
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            onClick={() => setActiveMenu("purchase")}
-            className={`flex items-center gap-4 cursor-pointer px-3 py-2 rounded w-full ${
-              activeMenu === "purchase" ? "bg-pink-100" : "hover:bg-gray-100"
-            }`}
-          >
-              <span className="bg-pink-400 text-white p-2 rounded-full flex items-center justify-center"><FaListAlt size={22} /></span>
-              <div className="flex flex-col items-start justify-center">
-                <span>Purchases</span>
-              </div>
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            onClick={() => setActiveMenu("feedback")}
-            className={`flex items-center gap-4 cursor-pointer px-3 py-2 rounded w-full ${
-              activeMenu === "feedback" ? "bg-orange-100" : "hover:bg-gray-100"
-            }`}
-          >
-              <span className="bg-orange-400 text-white p-2 rounded-full flex items-center justify-center"><FaBox size={22} /></span>
-              <div className="flex flex-col items-start justify-center">
-                <span>Feedback &</span>
-                <span>Comments</span>
-              </div>
-          </button>
-        </li>
-        <li>
-          <button
-            type="button"
-            onClick={() => setActiveMenu("logout")}
-            className={`flex items-center gap-4 cursor-pointer px-3 py-2 rounded w-full ${
-              activeMenu === "logout" ? "bg-gray-200" : "hover:bg-gray-100"
-            }`}
-          >
-              <span className="bg-gray-400 text-white p-2 rounded-full flex items-center justify-center"><LogOutIcon size={22} /></span>
-              <div className="flex flex-col items-start justify-center">
-                <span>Logout</span>
-              </div>
-          </button>
-        </li>
-      </ul>
-    </nav>
-  </aside>
-);
+const Sidebar: React.FC<SidebarProps> = ({ activeMenu, setActiveMenu }) => {
+  const menuItems = [
+    {
+      id: "dashboard",
+      label: "Dashboard",
+      icon: Home,
+      description: "Tổng quan hệ thống",
+      color: "bg-cyan-500"
+    },
+    {
+      id: "assessment-test",
+      label: "Assessment Test",
+      icon: ClipboardCheck,
+      description: "Quản lý bài kiểm tra",
+      color: "bg-blue-500"
+    }
+  ];
 
-const Header = () => (
-  <header className="flex items-center justify-between px-8 py-6 bg-white border-b sticky top-0 z-10 ml-0 md:ml-64">
-    <div className="flex items-center gap-4">
-      <form className="flex items-center gap-2">
-        <div className="relative">
-          <Input
-            type="text"
-            placeholder="Search..."
-            className="border rounded-full pl-4 pr-10 py-2 focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
-          />
-          <Button
-            type="submit"
-            className="absolute right-1 top-1/2 -translate-y-1/2 bg-blue-500 hover:bg-blue-600 text-white rounded-full p-2 transition"
-          >
-            <FaSearch className="text-lg" />
-      
-          </Button>
+  return (
+    <aside className="hidden md:flex flex-col w-72 h-screen bg-white/95 backdrop-blur-xl px-6 py-8 fixed left-0 top-0 z-10 shadow-2xl border-r border-slate-200/60">
+      {/* Logo */}
+      <div className="flex items-center gap-3 mb-8 pb-6 border-b border-slate-200/60">
+        <div className="w-10 h-10 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+          <GraduationCap className="w-6 h-6 text-white" />
         </div>
-      </form>
-    </div>
-    <div className="flex items-center gap-6">
-      <FaBell className="text-xl text-gray-500" />
-      <div className="flex items-center gap-2">
-        <img
-          src="/images/imageLanding.avif"
-          alt="avatar"
-          className="w-8 h-8 rounded-full"
-        />
         <div>
-          <div className="font-semibold">Moni Roy</div>
-          <div className="text-xs text-gray-500">Admin</div>
+          <h1 className="text-slate-800 font-bold text-xl">English Care Hub</h1>
+          <p className="text-slate-500 text-xs">Admin Dashboard</p>
         </div>
       </div>
-    </div>
-  </header>
-);
+
+      {/* Navigation */}
+      <nav className="flex-1 space-y-3">
+        {menuItems.map((item) => {
+          const IconComponent = item.icon;
+          const isActive = activeMenu === item.id;
+          
+          return (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => setActiveMenu(item.id)}
+              className={`group flex items-center gap-4 w-full px-4 py-3 rounded-xl transition-all duration-300 ${
+                isActive 
+                  ? "bg-gradient-to-r from-cyan-50 to-blue-50 border border-cyan-200/60 shadow-lg shadow-cyan-500/10" 
+                  : "hover:bg-slate-100/60 hover:translate-x-1"
+              }`}
+            >
+              <div className={`p-2.5 rounded-lg transition-all duration-300 ${
+                isActive 
+                  ? item.color + " shadow-lg" 
+                  : "bg-slate-200/60 group-hover:bg-slate-300/60"
+              }`}>
+                <IconComponent className={`w-5 h-5 ${
+                  isActive ? "text-white" : "text-slate-600"
+                }`} />
+              </div>
+              
+              <div className="flex-1 text-left">
+                <div className={`font-semibold text-sm ${
+                  isActive ? "text-slate-800" : "text-slate-600 group-hover:text-slate-800"
+                }`}>
+                  {item.label}
+                </div>
+                <div className={`text-xs transition-colors duration-300 ${
+                  isActive ? "text-cyan-600" : "text-slate-500 group-hover:text-slate-600"
+                }`}>
+                  {item.description}
+                </div>
+              </div>
+
+              {/* Active indicator */}
+              {isActive && (
+                <div className="w-1 h-8 bg-gradient-to-b from-cyan-500 to-blue-600 rounded-full shadow-sm"></div>
+              )}
+            </button>
+          );
+        })}
+      </nav>
+
+     
+    </aside>
+  );
+};
 
 const DashboardAdmin = () => {
   const [activeMenu, setActiveMenu] = useState("dashboard");
@@ -194,27 +123,23 @@ const DashboardAdmin = () => {
     switch (activeMenu) {
       case "dashboard":
         return <PageStatistics />;
-      case "account":
-        return  <AccountManagement />;
-      case "mentor":
-        return <MentorManagement />;
-      case "package":
-        return <ServicePackageManagement/>;
-      case "purchase":
-        return <h1 className="text-2xl font-bold">Purchases</h1>;
-      case "feedback":
-        return <h1 className="text-2xl font-bold">Feedback & Comments</h1>;
+      case "assessment-test":
+        return <AssessmentManagementPage />;
+
       default:
         return null;
     }
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gradient-to-br from-slate-50 via-gray-50 to-blue-50 min-h-screen">
       <Sidebar activeMenu={activeMenu} setActiveMenu={setActiveMenu} />
-      <div className="md:ml-64">
-        <Header />
-        <main className="p-8">{renderContent()}</main>
+      <div className="md:ml-72">
+        <main className="p-8">
+          <div className="bg-white/90 backdrop-blur-sm rounded-2xl border border-slate-200/60 p-6 shadow-xl">
+            {renderContent()}
+          </div>
+        </main>
       </div>
     </div>
   );

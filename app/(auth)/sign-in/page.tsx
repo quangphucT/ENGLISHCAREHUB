@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { useLoginMutation } from "@/hooks/useLoginMutation";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react"
+import { Loader2 } from "lucide-react";
 import { GoogleLoginButton } from "@/components/GoogleLoginButton";
 import AdvertisingMessage from "@/components/AdvertisingMessage";
 import { useLoginWithGoogle } from "@/hooks/useLoginWithGoogleMutation";
@@ -23,10 +23,10 @@ import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "@/lib/firebaseConfig";
 export default function LoginForm() {
   const { mutate, isPending } = useLoginMutation();
-  const {mutate: mutateGoogleLogin, isPending: isGoogleLoginPending} = useLoginWithGoogle();
+  const { mutate: mutateGoogleLogin } = useLoginWithGoogle();
   const router = useRouter();
-    const formSchema = z.object({
-      email: z.string().min(2).max(100).email(),
+  const formSchema = z.object({
+    email: z.string().min(2).max(100).email(),
     password: z.string().min(6).max(100),
   });
 
@@ -38,42 +38,54 @@ export default function LoginForm() {
       password: "",
     },
   });
+
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     mutate(values, {
-      onSuccess: () => {
+      onSuccess: (data) => {
+        // ✅ Truy cập đúng đường dẫn: data.account.role
+        if(data?.data?.role === "ADMIN"){
+          router.push("/dashboard-admin-layout");
+        }
         toast.success("Đăng nhập thành công!");
-        router.push("/");
       },
-      onError: (err) => { 
+      onError: (err) => {
         toast.error(err.message);
-      }
-
+      },
     });
   }
-const handleLoginWithGoogle = async () => {
 
 
+  
+  const handleLoginWithGoogle = async () => {
     const result = await signInWithPopup(auth, googleProvider);
     const user = result.user;
     const idToken = await user.getIdToken();
-    mutateGoogleLogin({ idToken }, {
-      onSuccess: () => {
-        toast.success("Đăng nhập với Google thành công!");
-    
+    mutateGoogleLogin(
+      { idToken },
+      {
+        onSuccess: (data) => {
+          toast.success("Đăng nhập với Google thành công!");
+
+          if (data?.needRoleSelection) {
+            router.push("/choosingRole-after-googleLogin");
+          } else {
+            router.push("/");
+          }
+        },
       }
-    }); // 🔑 gửi idToken qua hook
+    ); // 🔑 gửi idToken qua hook
   };
-  
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-[#18232a]">
-        <button
-            className="absolute left-6 top-6 cursor-pointer text-gray-400 hover:text-white text-3xl font-bold"
-            aria-label="Quay về đăng nhập"
-            onClick={() => router.push("/landing")}
-          >
-            ×
-          </button>
+      <button
+        className="absolute left-6 top-6 cursor-pointer text-gray-400 hover:text-white text-3xl font-bold"
+        aria-label="Quay về đăng nhập"
+        onClick={() => router.push("/landing")}
+      >
+        ×
+      </button>
       <div className="w-full max-w-md bg-[#18232a] rounded-xl shadow-lg p-8 flex flex-col items-center">
         <h1 className="text-3xl font-bold text-white mb-8 text-center">
           Đăng nhập
@@ -113,7 +125,12 @@ const handleLoginWithGoogle = async () => {
                         className="bg-[#22313c] text-white border border-[#2c3e50] rounded-xl px-4 py-[23px] focus:outline-none focus:ring-2 focus:ring-blue-400 placeholder:text-gray-400 text-lg"
                       />
                     </FormControl>
-                    <span onClick={() => {router.push("/forgot-password")}} className="ml-2 text-gray-400 text-sm cursor-pointer">
+                    <span
+                      onClick={() => {
+                        router.push("/forgot-password");
+                      }}
+                      className="ml-2 text-gray-400 text-sm cursor-pointer"
+                    >
                       QUÊN?
                     </span>
                   </div>
@@ -121,16 +138,20 @@ const handleLoginWithGoogle = async () => {
                 </FormItem>
               )}
             />
-            <Button disabled={isPending}
+            <Button
+              disabled={isPending}
               type="submit"
               className="w-full bg-[#2ed7ff] text-[#18232a] font-bold text-lg py-[23px] rounded-xl shadow hover:bg-[#1ec6e6] transition cursor-pointer"
             >
-              <Loader2  className={isPending ? "inline-block mr-2 animate-spin" : "hidden"} />
+              <Loader2
+                className={
+                  isPending ? "inline-block mr-2 animate-spin" : "hidden"
+                }
+              />
               ĐĂNG NHẬP
             </Button>
-           
-       
-          <GoogleLoginButton onClick={handleLoginWithGoogle} />
+
+            <GoogleLoginButton onClick={handleLoginWithGoogle} />
             <div className="mt-6 text-center text-gray-400 text-sm">
               Chưa có tài khoản?{" "}
               <Link
@@ -142,7 +163,7 @@ const handleLoginWithGoogle = async () => {
             </div>
           </form>
         </Form>
-        <AdvertisingMessage/>
+        <AdvertisingMessage />
       </div>
     </div>
   );

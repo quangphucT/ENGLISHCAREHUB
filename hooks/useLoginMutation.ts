@@ -11,7 +11,7 @@ export const useLoginMutation = () => {
   return useMutation<LoginResponse, Error, LoginRequest>({
     mutationFn: loginService,
     onSuccess: (data) => {
-      setAccount(data.account);
+      setAccount(data);
     },
   });
 };

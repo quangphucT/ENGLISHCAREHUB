@@ -33,10 +33,23 @@ export async function POST(request: Request) {
     if (!response.ok) {
       return NextResponse.json(data, { status: response.status });
     }
-
-    // Trả về response thành công
-    console.log("Backend success response:", data);
-    return NextResponse.json(data, { status: 200 });
+    const { accessToken, refreshToken } = data;
+    const res = NextResponse.json(data, { status: 200 });
+      res.cookies.set("accessToken", accessToken, {
+      httpOnly: true,
+      secure: true,
+      path: "/",
+      sameSite: "lax",
+      maxAge: 60 * 60, // 1 hour
+    });
+    res.cookies.set("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      path: "/",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 7,
+    });
+    return res;
 
   } catch (error) {
     const e = error as CustomError;

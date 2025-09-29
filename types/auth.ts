@@ -5,19 +5,16 @@ export interface LoginRequest {
 }
 export interface LoginResponse {
   message: string;
-  account: {
+  data: {
+    id: number;
+    fullName: string;
+    email: string;
+    phone: string | null;
     accessToken: string;
     refreshToken: string;
-    avatar: string | null;
-    createdAt: string;
-    description: string | null;
-    email: string;
-    firstName: string;
-    id: number;
-    isActive: boolean;
-    phone: string | null;
-    updatedAt: string;
-    lastName: string;
+    isActive: boolean,
+    isVerified: boolean,
+    role: string;
   };
 }
 
@@ -69,4 +66,21 @@ export interface GoogleLoginRequest {
 }
 export interface GoogleLoginResponse {
   message: string;
+  needRoleSelection?: boolean;
+  email: string;
+}
+
+
+// Types cho request và response
+export interface ChooseRoleRequest {
+  email: string;
+  role: 'LEARNER' | 'MENTOR';
+}
+
+export interface ChooseRoleResponse {
+   acessToken: string;
+    refreshToken: string;
+    role: 'LEARNER' | 'MENTOR';
+    email: string;
+ 
 }

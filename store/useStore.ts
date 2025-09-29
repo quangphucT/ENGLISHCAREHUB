@@ -2,37 +2,31 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-interface Account {
-  accessToken: string;
-  refreshToken: string;
-  avatar: string | null;
-  createdAt: string;
-  description: string | null;
-  email: string;
-  firstName: string;
-  id: number;
-  isActive: boolean;
-  phone: string | null;
-  updatedAt: string;
-  lastName: string;
-}
+import { LoginResponse } from "@/types/auth";
 
 interface UserState {
-  account: Account | null;
-  setAccount: (account: Account) => void;
+  data: LoginResponse | null;
+  userEmail: string | null;
+  setAccount: (account: LoginResponse) => void;
+  setUserEmail: (email: string) => void;
   logout: () => void;
 }
 
 export const useUserStore = create<UserState>()(
   persist(
     (set) => ({
-      account: null,
-      setAccount: (account) => set({ account }),
-      logout: () => set({ account: null }),
+      data: null,
+      userEmail: null,
+      setAccount: (data) => set({ data }),
+      setUserEmail: (email) => set({ userEmail: email }),
+      logout: () => set({ data: null, userEmail: null }),
     }),
     {
       name: "user-storage",
-      partialize: (state) => ({ account: state.account }),
+      partialize: (state) => ({
+        data: state.data,
+        userEmail: state.userEmail,
+      }),
     }
   )
 );
