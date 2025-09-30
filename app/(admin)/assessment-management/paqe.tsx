@@ -29,7 +29,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useGetAssessmentTests } from "@/features/admin/hooks/useGetAssessmentTests";
-import { AssessmentTest } from "@/types/assessmentTest";
+import { AssessmentTest, QuestionAssessment } from "@/types/assessmentTest";
 import { useGetQuestionsByTestId } from "@/features/admin/hooks/useGetQuestionsByTestId";
 
 // Form schema với validation
@@ -551,7 +551,7 @@ const AssessmentManagementPage = () => {
                       <CardTitle className="text-2xl font-bold text-slate-800">
                         Chi tiết bài test
                       </CardTitle>
-                     
+                      <p className="text-slate-600 mt-1">ID: {selectedAssessment.id}</p>
                     </div>
                   </div>
                   <Button
@@ -625,7 +625,7 @@ const AssessmentManagementPage = () => {
                             <p className="text-lg mb-2">Đang tải câu hỏi...</p>
                           </div>
                         ) : questionsAnswers && questionsAnswers.length > 0 ? (
-                          questionsAnswers.map((question: any, index: number) => (
+                          questionsAnswers.map((question: QuestionAssessment, index: number) => (
                             <div key={question.id} className="border border-slate-200 p-4 bg-slate-50/50">
                               {/* Question Header */}
                               <div className="flex items-start gap-3 mb-4">
@@ -641,7 +641,7 @@ const AssessmentManagementPage = () => {
                               
                               {/* Options */}
                               <div className="ml-11 space-y-2">
-                                {question.options?.map((option: any, optIndex: number) => (
+                                {question.options_assessments?.map((option: QuestionAssessment['options_assessments'][number], optIndex: number) => (
                                   <div 
                                     key={optIndex} 
                                     className={`flex items-center gap-3 p-3 border transition-all duration-200 ${
