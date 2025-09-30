@@ -1,5 +1,6 @@
 // app/api/admin/assessment/[testId]/questions/route.ts
 
+import { OptionAssessment } from "@/types/assessmentTest";
 import { NextRequest, NextResponse } from "next/server";
 
 interface CustomError {
@@ -47,7 +48,7 @@ export async function POST(
 
     // Check if at least one option is correct
     const hasCorrectAnswer = body.options.some(
-      (option: any) => option.correct === true
+      (option: OptionAssessment) => option.correct === true
     );
     if (!hasCorrectAnswer) {
       return NextResponse.json(
