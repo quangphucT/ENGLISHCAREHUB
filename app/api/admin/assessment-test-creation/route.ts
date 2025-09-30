@@ -16,13 +16,7 @@ export async function POST(request: NextRequest) {
     // Lấy accessToken từ cookie
     const accessToken = request.cookies.get('accessToken')?.value;
     
-    if (!accessToken) {
-      return NextResponse.json(
-        { message: "Không tìm thấy accessToken. Vui lòng đăng nhập lại." },
-        { status: 401 }
-      );
-    }
-
+    
     const body = await request.json();
     const response = await fetch(`${process.env.BE_API_URL}/assessment`, {
       method: "POST",
