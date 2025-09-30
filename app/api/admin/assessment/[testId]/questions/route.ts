@@ -13,14 +13,14 @@ interface CustomError {
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { testId: string } }
+  { params }: { params: Promise<{ testId: string }> }
 ) {
   try {
     // Lấy accessToken từ cookie
     const accessToken = request.cookies.get("accessToken")?.value;
 
-
-    const { testId } = params;
+    // Await params để lấy testId
+    const { testId } = await params;
 
     if (!testId) {
       return NextResponse.json(
