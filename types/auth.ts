@@ -66,7 +66,7 @@ export interface GoogleLoginRequest {
 }
 export interface GoogleLoginResponse {
   message: string;
-  needRoleSelection?: boolean;
+  requireAssessment?: boolean;
   email: string;
 }
 
@@ -83,4 +83,14 @@ export interface ChooseRoleResponse {
     role: 'LEARNER' | 'MENTOR';
     email: string;
  
+}
+
+// logout
+export interface LogoutRequest {
+  refreshToken: string;
+
+}
+
+export interface LogoutResponse {
+  message: string;
 }

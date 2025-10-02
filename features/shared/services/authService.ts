@@ -1,4 +1,3 @@
-
 import {
   ChooseRoleRequest,
   ChooseRoleResponse,
@@ -6,6 +5,8 @@ import {
   GoogleLoginResponse,
   LoginRequest,
   LoginResponse,
+  LogoutRequest,
+  LogoutResponse,
   RegisterRequest,
   RegisterResponse,
   ResendOTPRequest,
@@ -13,6 +14,7 @@ import {
   VerifyOTPRequest,
   VerifyOTPResponse,
 } from "@/types/auth";
+import { fetchWithAuth } from "@/utils/fetchWithAuth";
 
 export const loginService = async (
   credentials: LoginRequest
@@ -49,7 +51,8 @@ export const registerService = async (
     const data = await response.json();
     if (!response.ok) {
       // Handle validation errors from backend
-      const errorMessage = data.message || 
+      const errorMessage =
+        data.message ||
         (Array.isArray(data.messages) ? data.messages.join(", ") : undefined) ||
         "Register failed";
       throw new Error(errorMessage);
@@ -61,7 +64,6 @@ export const registerService = async (
     throw new Error(message);
   }
 };
-
 
 export const verifyOTPService = async (
   credentials: VerifyOTPRequest
@@ -86,7 +88,7 @@ export const verifyOTPService = async (
 
 export const resendOTPService = async (
   credentials: ResendOTPRequest
-): Promise<ResendOTPResponse> => {  
+): Promise<ResendOTPResponse> => {
   try {
     const response = await fetch("/api/auth/resend-otp", {
       method: "POST",
@@ -102,12 +104,12 @@ export const resendOTPService = async (
     const message =
       error?.response?.data?.message || error.message || "Resend OTP failed";
     throw new Error(message);
-  } 
+  }
 };
 
 export const loginWithGoogleService = async (
   credentials: GoogleLoginRequest
-): Promise<GoogleLoginResponse> => {  
+): Promise<GoogleLoginResponse> => {
   try {
     const response = await fetch("/api/auth/google-login", {
       method: "POST",
@@ -117,16 +119,21 @@ export const loginWithGoogleService = async (
       body: JSON.stringify(credentials),
     });
     const data = await response.json();
-    if (!response.ok) throw new Error(data.message || "Login with Google failed");
+    if (!response.ok)
+      throw new Error(data.message || "Login with Google failed");
     return data;
   } catch (error: any) {
     const message =
-      error?.response?.data?.message || error.message || "Login with Google failed";
+      error?.response?.data?.message ||
+      error.message ||
+      "Login with Google failed";
     throw new Error(message);
-  } 
+  }
 };
 
-export const chooseRoleAfterLoginGoogle = async (credentials: ChooseRoleRequest): Promise<ChooseRoleResponse> => {
+export const chooseRoleAfterLoginGoogle = async (
+  credentials: ChooseRoleRequest
+): Promise<ChooseRoleResponse> => {
   try {
     const response = await fetch("/api/auth/choose-role", {
       method: "POST",
@@ -134,7 +141,7 @@ export const chooseRoleAfterLoginGoogle = async (credentials: ChooseRoleRequest)
         "Content-Type": "application/json",
       },
       body: JSON.stringify(credentials),
-    }); 
+    });
     const data = await response.json();
     if (!response.ok) throw new Error(data.message || "Choose role failed");
     return data;
@@ -145,3 +152,20 @@ export const chooseRoleAfterLoginGoogle = async (credentials: ChooseRoleRequest)
   }
 };
 
+export const logoutSystemService = async (): Promise<LogoutResponse> => {
+  try {
+    const response = await fetchWithAuth("/api/auth/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message || "Logout failed");
+    return data;
+  } catch (error: any) {
+    const message =
+      error?.response?.data?.message || error.message || "Logout failed";
+    throw new Error(message);
+  }
+};

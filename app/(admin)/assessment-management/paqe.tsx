@@ -551,7 +551,7 @@ const AssessmentManagementPage = () => {
                       <CardTitle className="text-2xl font-bold text-slate-800">
                         Chi tiết bài test
                       </CardTitle>
-                      <p className="text-slate-600 mt-1">ID: {selectedAssessment.id}</p>
+              
                     </div>
                   </div>
                   <Button

@@ -61,16 +61,14 @@ export default function LoginForm() {
     const result = await signInWithPopup(auth, googleProvider);
     const user = result.user;
     const idToken = await user.getIdToken();
+    console.log("idToken:", idToken); // 🔑 kiểm tra idToken nhận được
     mutateGoogleLogin(
       { idToken },
       {
         onSuccess: (data) => {
           toast.success("Đăng nhập với Google thành công!");
-
-          if (data?.needRoleSelection) {
-            router.push("/choosingRole-after-googleLogin");
-          } else {
-            router.push("/");
+          if(data?.requireAssessment){
+               router.push("/placement-test");
           }
         },
       }
